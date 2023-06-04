@@ -1,12 +1,29 @@
 package keeper
 
 import (
+	"github.com/Gravity-Bridge/Gravity-Bridge/module/x/gravity/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // Wrapper struct
 type Hooks struct {
 	k Keeper
+}
+
+var _ types.GravityHooks = Keeper{}
+
+func (k Keeper) BeforeHandleSendToCosmos(ctx sdk.Context, claim types.MsgSendToCosmosClaim) error {
+	if k.hooks != nil {
+		return k.hooks.BeforeHandleSendToCosmos(ctx, claim)
+	}
+	return nil
+}
+
+func (k Keeper) AfterHandleSendToCosmos(ctx sdk.Context, claim types.MsgSendToCosmosClaim) error {
+	if k.hooks != nil {
+		return k.hooks.AfterHandleSendToCosmos(ctx, claim)
+	}
+	return nil
 }
 
 // Create new gravity hooks

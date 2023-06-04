@@ -59,6 +59,11 @@ func (a AttestationHandler) Handle(ctx sdk.Context, att types.Attestation, claim
 func (a AttestationHandler) handleSendToCosmos(ctx sdk.Context, claim types.MsgSendToCosmosClaim) error {
 	invalidAddress := false
 	// Validate the receiver as a valid bech32 address
+	err := a.keeper.BeforeHandleSendToCosmos(ctx, claim)
+	if err != nil {
+		return err
+	}
+
 	receiverAddress, addressErr := types.IBCAddressFromBech32(claim.CosmosReceiver)
 
 	if addressErr != nil {
@@ -196,7 +201,10 @@ func (a AttestationHandler) handleSendToCosmos(ctx sdk.Context, claim types.MsgS
 			return err
 		}
 	}
-
+	err2 := a.keeper.AfterHandleSendToCosmos(ctx, claim)
+	if err2 != nil {
+		return err2
+	}
 	return nil
 }
 

@@ -46,6 +46,7 @@ type Keeper struct {
 	accountKeeper     *authkeeper.AccountKeeper
 	ibcTransferKeeper *ibctransferkeeper.Keeper
 	bech32IbcKeeper   *bech32ibckeeper.Keeper
+	hooks             types.GravityHooks
 
 	AttestationHandler interface {
 		Handle(sdk.Context, types.Attestation, types.EthereumClaim) error
@@ -108,6 +109,7 @@ func NewKeeper(
 		ibcTransferKeeper:  ibcTransferKeeper,
 		bech32IbcKeeper:    bech32IbcKeeper,
 		AttestationHandler: nil,
+		hooks:              nil,
 	}
 	attestationHandler := AttestationHandler{keeper: &k}
 	attestationHandler.ValidateMembers()
@@ -490,4 +492,15 @@ func (k Keeper) IsOnBlacklist(ctx sdk.Context, addr types.EthAddress) bool {
 // becomes impossible to execute.
 func (k Keeper) InvalidSendToEthAddress(ctx sdk.Context, addr types.EthAddress, _erc20Addr types.EthAddress) bool {
 	return k.IsOnBlacklist(ctx, addr) || addr == types.ZeroAddress()
+}
+
+// Set the validator hooks
+func (k *Keeper) SetHooks(sh types.GravityHooks) *Keeper {
+	if k.hooks != nil {
+		panic("cannot set validator hooks twice")
+	}
+
+	k.hooks = sh
+
+	return k
 }
