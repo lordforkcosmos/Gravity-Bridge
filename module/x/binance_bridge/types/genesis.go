@@ -149,7 +149,7 @@ func DefaultParams() *Params {
 		GravityId:                    "binancebridge",
 		ContractSourceHash:           "",
 		BridgeEthereumAddress:        "0x0000000000000000000000000000000000000000",
-		BridgeChainId:                0,
+		BridgeChainId:                56,
 		SignedValsetsWindow:          10000,
 		SignedBatchesWindow:          10000,
 		SignedLogicCallsWindow:       10000,
