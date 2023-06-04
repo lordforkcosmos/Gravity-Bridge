@@ -47,8 +47,3 @@ type DistributionKeeper interface {
 	GetFeePool(ctx sdk.Context) (feePool types.FeePool)
 	SetFeePool(ctx sdk.Context, feePool types.FeePool)
 }
-
-type GravityHooks interface {
-	BeforeHandleSendToCosmos(ctx sdk.Context, claim MsgSendToCosmosClaim) error
-	AfterHandleSendToCosmos(ctx sdk.Context, claim MsgSendToCosmosClaim) error
-}
