@@ -40,7 +40,7 @@ import (
 
 // InvCheckPeriodPrimes A collection of all primes in (15, 200), for use with the crisis module's Invariant Check Period
 // feature but enabling fast block times by randomly selecting one of these primes with added security by halting the chain when something goes wrong.
-// These primes were selected for several reasons: a) Gravity has a validator limit of 200 thus too many collisions in this set are unlikely (fast blocks),
+// These primes were selected for several reasons: a) Delta has a validator limit of 200 thus too many collisions in this set are unlikely (fast blocks),
 // b) in the worst case the chain will halt ~ 20 minutes after invariant failure with more likely halt at ~13 minutes after,
 // c) a recent improvement to the sdk brings faster invariant checks
 var InvCheckPeriodPrimes = []uint{17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199}
@@ -64,7 +64,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 	// nolint: exhaustruct
 	rootCmd := &cobra.Command{
 		Use:   "gravity",
-		Short: "Stargate Gravity App",
+		Short: "Stargate Delta App",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			if err := client.SetCmdClientContextHandler(initClientCtx, cmd); err != nil {
 				return err
@@ -242,7 +242,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		logger.Info(fmt.Sprintf("This node will check invariants every %d blocks", invCheckPer))
 	}
 
-	return app.NewGravityApp(
+	return app.NewDeltaApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
 		cast.ToString(appOpts.Get(flags.FlagHome)),
 		invCheckPer,
@@ -274,15 +274,15 @@ func createSimappAndExport(
 
 	encCfg := app.MakeEncodingConfig() // Ideally, we would reuse the one created by NewRootCmd.
 	encCfg.Marshaler = codec.NewProtoCodec(encCfg.InterfaceRegistry)
-	var gravity *app.Gravity
+	var gravity *app.Delta
 	if height != -1 {
-		gravity = app.NewGravityApp(logger, db, traceStore, false, map[int64]bool{}, "", uint(1), encCfg, appOpts)
+		gravity = app.NewDeltaApp(logger, db, traceStore, false, map[int64]bool{}, "", uint(1), encCfg, appOpts)
 
 		if err := gravity.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		gravity = app.NewGravityApp(logger, db, traceStore, true, map[int64]bool{}, "", uint(1), encCfg, appOpts)
+		gravity = app.NewDeltaApp(logger, db, traceStore, true, map[int64]bool{}, "", uint(1), encCfg, appOpts)
 	}
 
 	return gravity.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)

@@ -1,7 +1,9 @@
 package ante
 
 import (
-	"github.com/Gravity-Bridge/Gravity-Bridge/module/x/gravity/keeper"
+	binancebridge "github.com/Gravity-Bridge/Gravity-Bridge/module/x/binance_bridge/keeper"
+	ethereumbridge "github.com/Gravity-Bridge/Gravity-Bridge/module/x/ethereum_bridge/keeper"
+	polygonbridge "github.com/Gravity-Bridge/Gravity-Bridge/module/x/polygon_bridge/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -22,7 +24,9 @@ import (
 // 2. it is not possible to modify an AnteHandler once it is constructed
 func NewAnteHandler(
 	options sdkante.HandlerOptions,
-	gravityKeeper *keeper.Keeper,
+	ethereumBridgeKeeper *ethereumbridge.Keeper,
+	binanceBridgeKeeper *binancebridge.Keeper,
+	polygonBridgeKeeper *polygonbridge.Keeper,
 	accountKeeper *authkeeper.AccountKeeper,
 	bankKeeper *bankkeeper.BaseKeeper,
 	feegrantKeeper *feegrantkeeper.Keeper,

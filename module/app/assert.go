@@ -7,10 +7,10 @@ import (
 )
 
 // There are two places where the bech32 "gravity" account prefix can be set: the default sdkConfig and also NativeHrp
-// in bech32ibc, this method asserts that the Gravity app has been properly configured with matching bech32 prefix
-// Note: These checks are not in Gravity.ValidateMembers() because GetNativeHrp() requires a ctx, call this func
+// in bech32ibc, this method asserts that the Delta app has been properly configured with matching bech32 prefix
+// Note: These checks are not in Delta.ValidateMembers() because GetNativeHrp() requires a ctx, call this func
 // just once on startup since sdkConfig is immutable and NativeHrp is not set by users.
-func (app *Gravity) assertBech32PrefixMatches(ctx sdk.Context) {
+func (app *Delta) assertBech32PrefixMatches(ctx sdk.Context) {
 	config := sdk.GetConfig()
 	if app == nil || config == nil || app.bech32IbcKeeper == nil {
 		panic("Invalid app/config/keeper state")

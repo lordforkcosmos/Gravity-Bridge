@@ -14,7 +14,7 @@ import (
 
 	bech32ibckeeper "github.com/althea-net/bech32-ibc/x/bech32ibc/keeper"
 
-	gravitytypes "github.com/Gravity-Bridge/Gravity-Bridge/module/x/gravity/types"
+	gravitytypes "github.com/Gravity-Bridge/Gravity-Bridge/module/x/ethereum_bridge/types"
 )
 
 // GetMercury2Dot0UpgradeHandler Creates the handler for "mercury2.0", where we fix the mercury upgrade's
